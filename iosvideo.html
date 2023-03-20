@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" id="viewport"
+        name="viewport" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <meta name="referrer" content="never" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+        }
+
+        #video {
+            /* width: 100%;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            cursor: pointer;
+            inset: 0; */
+            width: 400px;
+            height: 600px;
+
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.3.3/dist/hls.min.js"></script>
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+        var vConsole = new window.VConsole();
+    </script>
+
+    <script>
+        window.addEventListener("error", (e) => {
+            console.log(e, "errror");
+        })
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="file" name="file" id="file">
+        <video id="video" controls autopictureinpicture preload="auto" muted x5-video-player-type="h5-page"></video>
+    </div>
+    <script>
+
+        const video = document.getElementById("video");
+        // video.src = "http://alist.yangtuyun.cn/d/Go%20%E9%AB%98%E7%BA%A7%E5%B7%A5%E7%A8%8B%E5%B8%88%E5%AE%9E%E6%88%98%E8%90%A5(%E5%AE%8C%E7%BB%93)/39%20%E7%9B%B4%E6%92%AD%EF%BC%9A%E8%BE%85%E5%AF%BC%20%2B%20%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%20%2B%20%E7%AD%94%E7%96%91.mp4"
+        const inputFile = document.getElementById("file")
+        // inputFile.addEventListener("change", function (e) {
+        //     const file = e.target.files[0]
+        //     console.log(file,"file");
+        //     // const reader = new FileReader()
+        //     // reader.onload = (e) => {
+        //     //     console.log(e.target.result, "eeee");
+        //     //     const blob = new Blob([e.target.result],{type:"application/vnd.apple.mpegurl"})
+        //     //     video.src = URL.createObjectURL(blob)
+        //     //     // video.src = e.target.result
+        //     // }
+        //     // reader.readAsText(file)
+        // })
+        // https://ae01.alicdn.com/kf/H9c4b439abaa446c1abc1c1d6f64dc81d3.jpg // 单个
+        // 多个 // https://ae01.alicdn.com/kf/Ha22cc2f19ce5445785de1ea89f5bf4dcs.jpg
+        // const videoUrl = "https://ae01.alicdn.com/kf/H9c4b439abaa446c1abc1c1d6f64dc81d3.jpg"
+        // var videoUrl = "./rick.m3u8"
+        // var reader = new FileReader()
+        // video.src = "https://ae01.alicdn.com/kf/H9c4b439abaa446c1abc1c1d6f64dc81d3.jpg"
+        //Content-Type: application/vnd.apple.mpegurl
+        // fetch("https://ae01.alicdn.com/kf/H9c4b439abaa446c1abc1c1d6f64dc81d3.jpg").then(res => res.blob()).then(res => {
+        //     console.log(res, "data")
+        //     const m3url = new Blob([res], { type: "application/x-mpegURL" })
+        //     const bloburl = window.webkitURL.createObjectURL(m3url);
+        //     console.log(bloburl, "bloburl");
+        //     video.src = bloburl
+        //     // const reader = new FileReader()
+        //     // reader.onload = (e) => {
+        //     //     console.log(e.target.result, "eeee");
+        //     //     // const blob = new Blob([e.target.result],{type:"application/vnd.apple.mpegurl"})
+        //     //     // video.src = URL.createObjectURL(blob)
+        //     //     video.src = e.target.result
+        //     // }
+        //     // reader.readAsDataURL(m3url)
+        //     // videoUrl = res
+        //     // video.src = bloburl
+        //     // video.srcObject = bloburl
+
+        // })
+        // ceshi
+        // if (Hls.isSupported()) {
+        //     console.log(Hls.isSupported(),"Hls.isSupported()");
+        // }else if(video.canPlayType("application/x-mpegURL")) {
+        //     console.log("application/vnd.apple.mpegurl");
+
+        // }
+        var videoUrl = ""
+        fetch("./dy.m3u8")
+            .then(res => res.arrayBuffer())
+            .then(res => {
+                // const data = res.slice(32)
+                // application/x-mpegURL
+                var videoUrl = ""
+                const m3url = new Blob([res], { type: "application/x-mpegURL" })
+                // console.log(m3url,"m3url");
+                // const bloburl = URL.createObjectURL(m3url);
+                // video.src = bloburl
+                const fileRed = new FileReader()
+                fileRed.onload = (e) => {
+                    console.log(e.target.result,"eeeee");
+                    videoUrl = e.target.result
+                    if (Hls.isSupported()) {
+                        (function (Hls) {
+                            var load = Hls.DefaultConfig.loader.prototype.load;
+                            Hls.DefaultConfig.loader.prototype.load = function (
+                                context,
+                                config,
+                                callbacks
+                            ) {
+                                if (context.responseType === "arraybuffer") {
+                                    var onSuccess = callbacks.onSuccess;
+                                    callbacks.onSuccess = function (response, stats, context) {
+                                        var tsData = new Uint8Array(response.data);
+                                        var offset = 0
+                                        while (offset < tsData.length) {
+                                            if (tsData[offset] === 71 && tsData[offset + 188] === 71 && tsData[offset + 376] === 71) {
+                                                break
+                                            }
+                                            offset++
+
+                                        }
+                                        console.log(offset, "offset");
+                                        if (offset !== 0) {
+                                            response.data = response.data.slice(offset);
+                                        }
+                                        return onSuccess.call(this, response, stats, context);
+                                    };
+                                }
+                                return load.call(this, context, config, callbacks);
+                            };
+                        })(Hls);
+                        const hls = new Hls();
+                        hls.loadSource(videoUrl);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.ERROR, function (event, data) {
+                            console.log('HLS error:', data);
+                        });
+                    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                        video.src = videoUrl;
+                    }
+
+                }
+                fileRed.readAsDataURL(m3url)
+            })
+        // if (video.canPlayType("application/x-mpegURL")) {
+        //     console.log("application/vnd.apple.mpegurl");
+        // }
+        // if (Hls.isSupported()) {
+        //     (function (Hls) {
+        //         var load = Hls.DefaultConfig.loader.prototype.load;
+        //         Hls.DefaultConfig.loader.prototype.load = function (
+        //             context,
+        //             config,
+        //             callbacks
+        //         ) {
+        //             if (context.responseType === "arraybuffer") {
+        //                 var onSuccess = callbacks.onSuccess;
+        //                 callbacks.onSuccess = function (response, stats, context) {
+        //                     var tsData = new Uint8Array(response.data);
+        //                     var offset = 0
+        //                     while (offset < tsData.length) {
+        //                         if (tsData[offset] === 71 && tsData[offset + 188] === 71 && tsData[offset + 376] === 71) {
+        //                             break
+        //                         }
+        //                         offset++
+
+        //                     }
+        //                     console.log(offset, "offset");
+        //                     if (offset !== 0) {
+        //                         response.data = response.data.slice(offset);
+        //                     }
+        //                     return onSuccess.call(this, response, stats, context);
+        //                 };
+        //             }
+        //             return load.call(this, context, config, callbacks);
+        //         };
+        //     })(Hls);
+        //     const hls = new Hls();
+        //     hls.loadSource(videoUrl);
+        //     hls.attachMedia(video);
+        //     hls.on(Hls.Events.ERROR, function (event, data) {
+        //         console.log('HLS error:', data);
+        //     });
+        // } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        //     video.src = videoUrl;
+        // }
+        //audio/mpegurl
+        //data:application/x-mpegurl;base64,I0VYVE0zVQojRVhULVgtVkVSU0lPTjozCiNFWFQtWC1NRURJQS1TRVFVRU5DRTowCiNFWFQtWC1BTExPVy1DQUNIRTpZRVMKI0VYVC1YLVRBUkdFVERVUkFUSU9OOjExCiNFWFRJTkY6MTAuMDgsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hjOWE2M2U3ZTQyZGY0ODllYTA0NzYxNmIzMGJiYzVmMVIucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0gzYTIxNzVlNzU3Yzk0YzJlOGU1MmRiN2JjMmMwZTY4NEkucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g3YWY2NDA0NDE0YjY0NzQxOTcyNjM0N2UzYTRmZDhmYlQucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hhNTE5Y2ZjZWUxN2U0YTc0ODU2YzcwOGE0Y2U5ZGY1MVAucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g1YmI2YzU3ZDUyZTc0NDFmODUyZTBmNDk0ZGI3MzQzNE0ucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hkZDhhOTFkOGZlMzA0MDAyYWU1Y2Q5NjA4ZWZkNWU5NjIucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0gxZWZlYjgzNGMyNmI0YWY2YWNkZTU4MTgzZGNiZDczZTUucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hmZDZmZjBhNjAxZGQ0ZTBjODk4OWI1ZjM2YTRhNjYzNkYucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hhZTViYzhmMTliMGE0NzRiYjViMTgzMTM4MGJiZGJmYlMucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g0MGQwNWQ4OTBmODI0OWQ5OTU0NDliNTQ1OWE4MzI5YUsucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0gyOTMzMjVjMjRlMjk0NjFiOGY4ZGNlYjMxODExYWIyYmsucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g5NGQwNzM3ZWYxYzA0MzUwYjA3YjNhNWYzY2NhZDUwZkMucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0gxMDAzZDVmMzIzODQ0ZWQ1ODg3NTFmNzBmMjQ5OWM2MnkucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g5YTBiZmJiOWQ1Y2I0ZGM3ODZkZTg0ZDQ2YmU4ODI2NjcucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g4YWMyZDE5OGM4NjA0YjczYjY0YzliZDZhNzY2OTYzZFYucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g0YTBiZTA4MmYwNTk0YzRkYjJhY2NhMDAyYWE5NDIxY0cucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0gxYTBmZWM0YmI5NWM0N2MyOGFlZDkzZGI2NTBjNDA2YmQucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hhNWM2ODUyZjdiMTY0ODAyOGNlYTNjY2Y5NWM3Mzk2MXAucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0hkMTM4Y2M2YzM2MDA0N2FhYjA3NDAzZTlmYWQxOGI2MTIucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g4MTJjNWJjZDgzOWM0Y2VlOGM1ZGNlNDY3OWMwZGZkOG4ucG5nCiNFWFRJTkY6MTAsCmh0dHBzOi8vYWUwMi5hbGljZG4uY29tL2tmL0g2ZmFkMTg5MTNkZTc0YTEwYWJiMWRhOWJkZDIwOTQwZmoucG5nCiNFWFRJTkY6Mi4zNiwKaHR0cHM6Ly9hZTAyLmFsaWNkbi5jb20va2YvSGFmZjdiYzBlNTBlYjRmZjRhMjg3NDYxMmE2MWNiMDY2bS5wbmcKI0VYVC1YLUVORExJU1QK
+        // fetch("./dy.m3u8")
+        //     .then(res => res.arrayBuffer())
+        //     .then(res => {
+        //         // const data = res.slice(32)
+        //         // application/x-mpegURL
+
+        //         const m3url = new Blob([res], { type: "application/vnd.apple.mpegurl" })
+        //         // console.log(m3url,"m3url");
+        //         // const bloburl = URL.createObjectURL(m3url);
+        //         // video.src = bloburl
+        //         const fileRed = new FileReader()
+        //         fileRed.onload = (e) => {
+        //             video.src = e.target.result
+
+        //         }
+        //         fileRed.readAsDataURL(m3url)
+        //     })
+        // video.src = "http://www.yangtuyun.cn/dy.m3u8"
+        // video.src = "./video.mp4"
+        // video.src = "https://ae01.alicdn.com/kf/H9c4b439abaa446c1abc1c1d6f64dc81d3.jpg"
+    //    setTimeout(()=>{
+        // video.src = "./mv.m3u8"
+    //    },5000)
+        // if (Hls.isSupported()) {
+        //     (function (Hls) {
+        //         var load = Hls.DefaultConfig.loader.prototype.load;
+        //         Hls.DefaultConfig.loader.prototype.load = function (
+        //             context,
+        //             config,
+        //             callbacks
+        //         ) {
+        //             if (context.responseType === "arraybuffer") {
+        //                 var onSuccess = callbacks.onSuccess;
+        //                 callbacks.onSuccess = function (response, stats, context) {
+        //                     var tsData = new Uint8Array(response.data);
+        //                     var offset = 0
+        //                     while (offset < tsData.length) {
+        //                         if (tsData[offset] === 71 && tsData[offset + 188] === 71 && tsData[offset + 376] === 71) {
+        //                             break
+        //                         }
+        //                         offset++
+
+        //                     }
+        //                     console.log(offset, "offset");
+        //                     if (offset !== 0) {
+        //                         response.data = response.data.slice(offset);
+        //                     }
+        //                     return onSuccess.call(this, response, stats, context);
+        //                 };
+        //             }
+        //             return load.call(this, context, config, callbacks);
+        //         };
+        //     })(Hls);
+        //     const hls = new Hls();
+        //     hls.loadSource(videoUrl);
+        //     hls.attachMedia(video);
+        //     hls.on(Hls.Events.ERROR, function (event, data) {
+        //         console.log('HLS error:', data);
+        //     });
+        // } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        //     video.src = videoUrl;
+        // } 
+    </script>
+</body>
