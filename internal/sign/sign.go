@@ -11,7 +11,7 @@ var once sync.Once
 var instance sign.Sign
 
 func Sign(data string) string {
-	expire := 4
+	expire := 1
 	if expire == 0 {
 		return NotExpired(data)
 	} else {

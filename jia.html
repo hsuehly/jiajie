@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+</head>
+
+<body>
+    <script>
+        const data = [250, 7, 84, 2, 83, 132, 163, 47, 222, 235, 175, 30, 226, 79, 217, 222, 12, 44, 24, 199, 205, 61, 86, 129, 74, 168, 124, 176, 139, 17, 160, 61, 38, 182, 17, 7, 168, 106, 203, 9, 126, 178, 21, 113, 124, 19, 138, 5, 114, 167, 86, 25, 44, 22, 55, 143, 232, 116, 202, 204, 127, 35, 212, 32, 155, 181, 5, 7, 117, 33, 116, 89, 228, 216, 219, 17, 11, 163, 149, 106, 77, 197, 22, 84, 77, 10, 3, 55, 69, 33, 28, 18, 156, 86, 16, 185, 252, 103, 112, 160, 12, 106, 34, 41, 21, 164, 30, 134, 62, 72, 188, 111, 181, 129, 130, 1, 118, 95, 187, 117, 45, 245, 132, 182, 86, 233, 119, 3, 117, 2, 166, 192, 46, 29, 55, 244, 4, 57, 103, 250, 70, 68, 218, 214, 168, 226, 99, 175, 15, 235, 5, 173, 19, 42, 172, 37, 148, 69, 7, 133, 233, 218, 164, 146, 200, 126, 124, 165, 19, 188, 216, 52, 179, 137, 114, 75, 101, 12, 15, 25, 70, 35, 109, 223, 253, 147, 26, 126, 77, 123, 216, 177, 123, 19, 47, 163, 12, 237, 130, 102, 221, 228, 30, 142, 223, 129, 97, 163, 100, 95, 243, 140, 60, 43, 184, 127, 193, 140, 105, 126, 81, 112, 90, 196, 157, 252, 163, 161, 0, 191, 241, 41, 160, 191, 47, 45, 241, 167, 122, 173, 244, 159, 163, 108, 23, 234, 217, 199, 240, 117, 17, 174, 117, 14, 145, 199, 209, 144, 99, 215, 169, 66, 149, 12, 215, 231, 241, 201, 88, 122, 253, 237, 122, 84, 11, 39, 205, 39, 191, 230, 116, 156, 219, 134, 218, 161, 102, 53, 96, 248, 65, 205, 42, 146, 154, 150, 210, 142, 78, 246, 14, 246, 18, 59, 111, 222, 86, 178, 21, 234, 144, 69, 30, 133, 32, 69, 111, 36, 91, 225, 223, 64, 205, 235, 1, 223, 19, 116, 1, 190, 30, 13, 63, 206, 133, 115, 3, 183, 157, 165, 140, 137, 160, 92, 206, 39, 136, 184, 178, 208, 212, 46, 0, 241, 23, 202, 169, 78, 180, 111, 191, 254, 215, 60, 167, 47, 190, 192, 175, 219, 4, 102, 2, 4, 246, 204, 7, 156, 236, 243, 48, 76, 49, 245, 115, 99, 197, 13, 55, 119, 45, 57, 80, 8, 67, 143, 90, 206, 168, 0, 211, 24, 165, 29, 150, 131, 35, 215, 89, 71, 238, 189, 210, 84, 234, 70, 156, 177, 218, 107, 252, 251, 61, 149, 67, 19, 81, 235, 206, 63, 76, 153, 80, 1, 26, 217, 88, 136, 213, 110, 186, 140, 131, 34, 26, 146, 77, 92, 243, 50, 115, 43, 135, 192, 63, 188, 144, 71, 168, 13, 229, 147, 196, 80, 24, 129, 127, 227, 212, 26, 65, 158, 221, 6, 56, 89, 151, 179, 203, 189, 215, 104, 13, 211, 19, 98, 38, 75, 219, 172, 239, 84, 78, 136, 149, 108, 186, 160, 229, 103, 24, 43, 140, 210, 153, 2, 94, 181, 159, 0, 44, 84, 58, 203, 101, 1, 166, 88, 178, 195, 97, 181, 161, 226, 235, 45, 81, 163, 16, 28, 154, 71, 56, 141, 233, 95, 7, 59, 190, 145, 14, 132, 154, 72, 37, 32, 87, 11, 80, 159, 154, 143, 248, 210, 232, 119, 84, 20, 195, 118, 250, 83, 231, 6, 198, 144, 247, 87, 46, 244, 185, 108, 91, 140, 107, 209, 15, 118, 106, 123, 192, 234, 225, 77, 213, 107, 137, 148, 42, 50, 231, 165, 40, 50, 246, 83, 131, 228, 78, 233, 157, 2, 230, 218, 191, 20, 94, 25, 145, 108, 200, 237, 126, 224, 224, 61, 51, 36, 170, 85, 140, 206, 159, 4, 57, 17, 180, 157, 145, 195, 210, 61, 59, 154, 84, 152, 200, 10, 23, 201, 213, 183, 77, 8, 23, 60, 66, 168, 55, 23, 4, 231, 117, 144, 46, 5, 79, 34, 210, 174, 57, 106, 16, 26, 59, 32, 138, 46, 195, 189, 89, 249, 85, 11, 7, 18, 233, 219, 83, 22, 72, 32, 55, 44, 140, 213, 15, 83, 246, 217, 168, 39, 125, 213, 61, 115, 71, 212, 8, 249, 105, 236, 229, 179, 195, 162, 210, 34, 228, 210, 180, 178, 238, 173, 11, 199, 154, 103, 83, 160, 171, 213, 29, 115, 97, 10, 245, 127, 238, 250, 38, 162, 38, 192, 182, 154, 129, 170, 73, 168, 67, 222, 44, 50, 2, 185, 228, 25, 197, 37, 35, 173, 162, 94, 210, 212, 37, 116, 35, 219, 178, 91, 88, 139, 227, 3, 131, 207, 14, 20, 108, 214, 240, 23, 1, 193, 190, 128, 29, 111, 12, 26, 152, 129, 163, 155, 206, 90, 250, 53, 5, 135, 73, 84, 244, 187, 121, 151, 220, 242, 171, 238, 205, 141, 104, 107, 22, 145, 83, 7, 129, 66, 56, 189, 228, 152, 72, 137, 216, 175, 173, 39, 109, 205, 122, 238, 139, 89, 117, 196, 104, 228, 87, 89, 98, 62, 68, 116, 98, 211, 137, 177, 154, 60, 86, 17, 17, 127, 66, 225, 69, 61, 52, 174, 194, 6, 131, 18, 56, 188, 208, 21, 34, 22, 135, 155, 115, 176, 22, 255, 106, 223, 206, 91, 225, 219, 27, 196, 26, 68, 31, 173, 30, 86, 214, 214, 71, 112, 31, 108, 35, 177, 57, 245, 26, 101, 188, 60, 86, 241, 165, 121, 10, 208, 134, 158, 255, 127, 230, 131, 150, 181, 185, 141, 53, 32, 108, 80, 195, 45, 180, 22, 166, 4, 235, 32, 24, 198, 227, 15, 177, 81, 171, 162, 54, 11, 243, 114, 74, 233, 211, 18, 82, 91, 120, 3, 101, 213, 88, 189, 246, 114, 123, 228, 242, 162, 151, 235, 116, 149, 113, 12, 9, 63, 24, 248, 149, 25, 67, 49, 87, 178, 174, 240, 102, 6, 178, 91, 36, 145, 224, 87, 169, 175, 237, 244, 148, 244, 1, 112, 167, 191, 224, 17, 88, 134, 27, 138, 104, 194, 37, 24, 114, 146, 97, 182, 92, 211, 24, 153, 184, 251, 13, 172, 23, 246, 250, 98, 249, 30, 108, 24, 119, 234, 106, 224, 21, 132, 111, 68, 163, 141, 38, 195, 51, 14, 0, 230, 182, 248, 85, 202, 168, 146, 94, 12, 199, 196, 106, 139, 120, 190, 177, 229, 249, 58, 208, 136, 238, 113, 16, 197, 213, 141, 193, 70, 70, 225, 130, 209, 187, 92, 238, 248, 122, 180, 216, 97, 153, 171, 120, 77, 231, 65, 237, 239, 93, 43, 4, 149, 132, 68, 173, 173, 165, 194, 103, 227, 147, 235, 239, 45, 117, 179, 3, 220, 241, 176, 145, 1, 127, 234, 250, 222, 246, 54, 112, 115, 14, 122, 206, 104, 254, 36, 11, 78, 225, 202, 209, 191, 209, 158, 172, 173, 227, 35, 251, 226, 56, 60, 173, 249, 122, 130, 244, 152, 126, 216, 199, 205, 208, 81, 240, 71, 98, 71, 188, 205, 16, 172, 219, 8, 70, 23, 10, 3, 242, 115, 33, 243, 100, 43, 5, 169, 225, 213, 20, 92, 151, 208, 145, 55, 25, 60, 199, 198, 119, 52, 102, 58, 191, 173, 21, 137, 158, 251, 76, 4, 187, 212, 70, 156, 69, 14, 103, 20, 17, 229, 55, 47, 120, 180, 196, 67, 170, 166, 114, 137, 239, 234, 219, 252, 240, 84, 139, 142, 125, 72, 82, 78, 4, 54, 39, 233, 165, 158, 37, 68, 91, 12, 181, 14, 78, 89, 17, 107, 101, 7, 212, 116, 208, 110, 19, 46, 45, 94, 12, 16, 142, 104, 197, 40, 229, 237, 130, 139, 223, 241, 37, 110, 178, 228, 36, 64, 234, 161, 81, 178, 71, 224, 195, 130, 188, 165, 41, 127, 138, 41, 107, 192, 56, 76, 194, 140, 162, 69, 112, 139, 141, 80, 250, 218, 249, 167, 89, 237, 2, 75, 142, 255, 241, 187, 149, 29, 131, 222, 42, 156, 206, 248, 225, 171, 205, 37, 147, 170, 111, 239, 153, 128, 185, 183, 8, 247, 32, 53, 18, 26, 103, 222, 15, 195, 202, 149, 71, 26, 111, 191, 56, 34, 0, 161, 235, 198, 203, 91, 92, 178, 170, 87, 32, 163, 233, 98, 158, 165, 242, 117, 62, 107, 111, 39, 219, 248, 99, 218, 79, 13, 166, 142, 24, 53, 117, 175, 135, 225, 121, 145, 185, 179, 81, 46, 28, 235, 248, 194, 137, 192, 54, 1, 159, 213, 244, 101, 125, 137, 201, 216, 112, 115, 215, 54, 180, 235, 181, 24, 175, 172, 227, 10, 110, 75, 231, 219, 216, 16, 249, 200, 120, 91, 210, 226, 237, 174, 100, 77, 207, 5, 52, 60, 80, 213, 32, 161, 70, 217, 108, 201, 165, 113, 196, 140, 64, 97, 159, 139, 123, 94, 142, 61, 223, 172, 235, 119, 130, 243, 207, 41, 190, 90, 167, 163, 198, 188, 65, 74, 89, 47, 105, 165, 34, 12, 223, 115, 118, 0, 159, 195, 30, 10, 103, 154, 7, 90, 15, 125, 92, 217, 219, 28, 186, 5, 157, 226, 56, 248, 177, 174, 129, 162, 95, 194, 203, 169, 211, 122, 194, 133, 175, 254, 179, 11, 184, 244, 21, 210, 87, 186, 196, 198, 138, 231, 245, 49, 66, 2, 95, 184, 95, 170, 141, 150, 220, 1, 99, 144, 65, 133, 84, 149, 246, 29, 44, 199, 150, 221, 5, 132, 101, 189, 20, 119, 180, 0, 12, 149, 60, 207, 175, 1, 57, 245, 233, 232, 65, 134, 211, 103, 226, 15, 239, 27, 226, 125, 91, 182, 187, 21, 19, 210, 236, 213, 255, 107, 145, 19, 139, 115, 7, 92, 48, 155, 237, 58, 148, 159, 115, 136, 5, 50, 152, 124, 143, 13, 228, 138, 19, 46, 71, 111, 8, 127, 128, 60, 80, 248, 172, 64, 178, 187, 199, 80, 101, 110, 18, 93, 71, 13, 5, 139, 73, 237, 197, 101, 201, 138, 6, 17, 33, 27, 237, 233, 0, 129, 5, 12, 117, 43, 160, 61, 81, 17, 10, 69, 12, 91, 205, 146, 216, 165, 129, 114, 91, 229, 110, 19, 215, 197, 7, 154, 225, 173, 20, 211, 47, 95, 55, 185, 243, 43, 37, 28, 90, 186, 236, 125, 176, 171, 126, 163, 226, 8, 69, 99, 244, 56, 163, 140, 25, 12, 46, 21, 183, 118, 14, 81, 37, 209, 187, 24, 93, 103, 28, 50, 172, 130, 180, 92, 67, 54, 81, 216, 6, 246, 49, 5, 197, 113, 245, 38, 253, 76, 44, 240, 11, 127, 12, 67, 207, 2, 72, 14, 44, 196, 200, 254, 217, 11, 66, 94, 16, 105, 248, 172, 97, 68, 212, 22, 134, 234, 46, 41, 245, 35, 146, 129, 54, 12, 185, 148, 201, 82, 145, 243, 211, 39, 33, 251, 40, 208, 90, 24, 171, 17, 62, 213, 130, 213, 112, 114, 117, 119, 146, 163, 247, 10, 243, 139, 128, 192, 127, 198, 121, 149, 12, 64, 179, 76, 220, 99, 249, 160, 127, 89, 219, 23, 72, 71, 150, 144, 78, 75, 101, 235, 78, 27, 239, 183, 186, 23, 33, 110, 182, 242, 46, 198, 185, 87, 161, 248, 253, 73, 189, 24, 68, 131
+        ]
+        // function aseEncrypt(msg, key) {
+        //     key = PaddingLeft(key, 16);//保证key的长度为16byte,进行'0'补位
+        //     key = CryptoJS.enc.Utf8.parse(key);
+        //    var  iv = CryptoJS.enc.Utf8.parse("0000000000000000")
+        //     // 加密结果返回的是CipherParams object类型
+        //     // key 和 iv 使用同一个值
+        //     var encrypted = CryptoJS.AES.encrypt(msg, key, {
+        //         iv: iv,
+        //         mode: CryptoJS.mode.CBC,// CBC算法
+        //         padding: CryptoJS.pad.Pkcs7 //使用pkcs7 进行padding 后端需要注意
+        //     });
+        //     // ciphertext是密文,toString()内传编码格式,比如Base64,这里用了16进制
+        //     // 如果密文要放在 url的参数中 建议进行 base64-url-encoding 和 hex encoding, 不建议使用base64 encoding
+        //     return encrypted.ciphertext.toString(CryptoJS.enc.Hex)  //后端必须进行相反操作
+
+        // }
+        // // 确保key的长度,使用 0 字符来补位
+        // // length 建议 16 24 32
+        // function PaddingLeft(key, length) {
+        //     let pkey = key.toString();
+        //     let l = pkey.length;
+        //     if (l < length) {
+        //         pkey = new Array(length - l + 1).join('0') + pkey;
+        //     } else if (l > length) {
+        //         pkey = pkey.slice(length);
+        //     }
+        //     return pkey;
+        // }
+        // console.log(aseEncrypt("hsuehly","passphrasewhichneedstobe32bytest"));
+
+        // 从后端获取的数据（10进制）
+        // const data = [143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173];
+
+        // // 将数据转换为字节数组
+        // const bytes = new Uint8Array(data);
+
+        // // IV 值在传递的数据的前 16 个字节
+        // const iv = bytes.slice(0, 16);
+
+        // // 加密后的数据在剩余部分
+        // const encryptedData = bytes.slice(16);
+
+        // // 密钥
+        // const passphrase = "passphrasewhichneedstobe32bytest";
+        // const key = CryptoJS.enc.Utf8.parse(passphrase);
+
+        // // 解密
+        // const decryptedData = CryptoJS.AES.decrypt(
+        //     { ciphertext: CryptoJS.lib.WordArray.create(encryptedData) },
+        //     key,
+        //     { iv: CryptoJS.lib.WordArray.create(iv) }
+        // );
+        // console.log(decryptedData, "decryptedData");
+        // // 将解密后的数据转换为字符串并输出到页面上
+        // const result = new TextDecoder().decode(decryptedData);
+        // // document.getElementById("result").textContent = result;
+        // console.log(result, "result");
+        //         function decrypt() {
+        //             var encryptedText = "143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173"
+
+        //             // 将 10 进制字符串转换为 byte 数组
+        //             // var arrayBuffer = new Uint8Array(encryptedText.split(","));
+        //             var arrayBuffer = new Uint8Array(encryptedText.split(",").map(Number));
+        //             console.log(arrayBuffer,"arrayBuffer");
+        //             // 获取密钥和 iv
+        //             var key = "passphrasewhichneedstobe32bytes!";
+        //             var iv = CryptoJS.lib.WordArray.create(arrayBuffer.slice(0, 16));
+
+        //             // 进行解密操作
+        //             var decryptedArrayBuffer = CryptoJS.AES.decrypt({
+        //                 ciphertext: CryptoJS.lib.WordArray.create(arrayBuffer.slice(16))
+        //             }, key, {
+        //                 iv: iv
+        //             });
+        // console.log(decryptedArrayBuffer,"decryptedArrayBuffer");
+        //             // 将解密后的 byte 数组转换为字符串输出
+        //             var decryptedText = String.fromCharCode.apply(null, new Uint8Array(decryptedArrayBuffer));
+        //             console.log(decryptedText,"decryptedText");
+        //         }
+        //         decrypt()
+
+        // const encryptedData = [143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173];;
+        // const iv = encryptedData.slice(0, 16);
+        // const key = 'passphrasewhichneedstobe32bytest';
+
+        // // 将 iv 和 key 转换为 CryptoJS 使用的格式
+        // const ivWordArray = CryptoJS.lib.WordArray.create(iv);
+        // console.log(ivWordArray,"ivWordArray");
+        // const keyWordArray = CryptoJS.enc.Utf8.parse(key);
+        // console.log(keyWordArray,"keyWordArray");
+
+        // // 使用 CryptoJS 解密数据
+        // const ciphertext = CryptoJS.lib.WordArray.create(encryptedData.slice(16));
+        // const plaintext = CryptoJS.AES.decrypt({
+        //     ciphertext: ciphertext,
+        //     iv: ivWordArray,
+        //     key: keyWordArray,
+        // });
+        // console.log(plaintext, "plaintext");
+        // // // 将解密后的数据转换为原始格式
+        // // const decryptedData = new Uint8Array(plaintext.words.length * 4);
+
+        // // for (let i = 0; i < plaintext.words.length; i++) {
+        // //     const word = plaintext.words[i];
+        // //     decryptedData[i * 4] = (word >> 24) & 0xff;
+        // //     decryptedData[i * 4 + 1] = (word >> 16) & 0xff;
+        // //     decryptedData[i * 4 + 2] = (word >> 8) & 0xff;
+        // //     decryptedData[i * 4 + 3] = word & 0xff;
+        // // }
+        // // console.log(decryptedData,"decryptedData");
+        // function decrypt() {
+
+        //     // 将 10 进制数组转换为 byte 数组
+        //     var arrayBuffer = new Uint8Array([143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173]);
+
+        //     // 获取密钥和 iv
+        //     var key = "passphrasewhichneedstobe32bytest";
+        //     var iv = CryptoJS.lib.WordArray.create(arrayBuffer.slice(0, 16));
+
+        //     // 进行解密操作
+        //     var decryptedArrayBuffer = CryptoJS.AES.decrypt({
+        //         ciphertext: CryptoJS.lib.WordArray.create(arrayBuffer.slice(16))
+        //     }, key, {
+        //         iv: iv,
+        //         padding: CryptoJS.pad.Pkcs7
+        //     });
+        //     console.log(decryptedArrayBuffer,"decryptedArrayBuffer");
+
+        //     var decryptedUintArray = new Uint8Array(decryptedArrayBuffer.words.length * 4);
+        //     for (var i = 0; i < decryptedArrayBuffer.words.length; i++) {
+        //         decryptedUintArray[i * 4 + 0] = (decryptedArrayBuffer.words[i] >> 24) & 0xff;
+        //         decryptedUintArray[i * 4 + 1] = (decryptedArrayBuffer.words[i] >> 16) & 0xff;
+        //         decryptedUintArray[i * 4 + 2] = (decryptedArrayBuffer.words[i] >> 8) & 0xff;
+        //         decryptedUintArray[i * 4 + 3] = (decryptedArrayBuffer.words[i] >> 0) & 0xff;
+        //     }
+
+        //     // 将解密后的 byte 数组转换为字符串输出
+        //     // var decryptedText = String.fromCharCode.apply(null, decryptedUintArray);
+        //     var decryptedText = new TextDecoder('utf8').decode(decryptedUintArray);
+        //     console.log(decryptedText,"decryptedText");
+        //     // document.getElementById("decryptedText").innerHTML = decryptedText;
+        // }
+        // decrypt()
+        function dec() {
+            // 从后端传递过来的 10 进制数组
+
+            // 将 10 进制数组转换为 byte 数组
+            // const byteArray = new Uint8Array(decimalArray);
+            var byteArray = new Uint8Array(data);
+
+            // 从前 16 个字节中读取 iv 值
+            const iv = byteArray.slice(0, 16);
+
+            // 从第 17 个字节开始获取密文数据
+            const ciphertext = byteArray.slice(16);
+
+            // 解密密文数据
+            const decrypted = CryptoJS.AES.decrypt({
+                ciphertext: CryptoJS.lib.WordArray.create(ciphertext)
+            }, 'passphrasewhichneedstobe32bytest', {
+                iv: CryptoJS.lib.WordArray.create(iv),
+                padding: CryptoJS.pad.Pkcs7
+            });
+
+            // 将解密后的 byte 数组转换为 10 进制数组并打印
+            const decryptedDecimalArray = Array.from(decrypted.toString(CryptoJS.enc.Latin1), c => c.charCodeAt(0));
+            console.log(decryptedDecimalArray, "result");
+
+        }
+        dec()
+        function ddd() {
+            // 从后端传递过来的 10 进制数组
+            // const decimalArray = [143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173];
+
+            // 将 10 进制数组转换为 byte 数组
+            const byteArray = new Uint8Array(data);
+
+            // 从前 16 个字节中读取 iv 值
+            const iv = byteArray.slice(0, 16);
+
+            // 从第 17 个字节开始获取密文数据
+            const ciphertext = byteArray.slice(16);
+
+            // 解密密文数据
+            const key = CryptoJS.enc.Utf8.parse('passphrasewhichneedstobe32bytest');
+            const decrypted = CryptoJS.AES.decrypt({
+                ciphertext: CryptoJS.lib.WordArray.create(ciphertext)
+            }, key, {
+                iv: CryptoJS.lib.WordArray.create(iv),
+                padding: CryptoJS.pad.Pkcs7
+            });
+
+            // 将解密后的 byte 数组转换为 10 进制数组并打印
+            // const decryptedDecimalArray = Array.from(decrypted.toString(CryptoJS.enc.Latin1), c => c.charCodeAt(0));
+            // console.log(decryptedDecimalArray, "resulttt");
+            // var decoder = new TextDecoder('utf-8');
+            // var str = decoder.decode(decryptedDecimalArray);
+            // console.log(str,"str");
+            const decryptedString = decrypted.toString(CryptoJS.enc.Utf8);
+
+            console.log(decryptedString, "sss");
+        }
+        ddd()
+        function aes() {
+            // const decimalArray = [143, 97, 5, 125, 170, 230, 231, 250, 238, 227, 60, 173, 32, 164, 249, 233, 42, 213, 159, 133, 76, 208, 153, 145, 99, 245, 48, 48, 140, 205, 242, 173];
+
+            // 将 10 进制数组转换为 byte 数组
+            const byteArray = new Uint8Array(data);
+            const key = new Uint8Array([112, 97, 115, 115, 112, 104, 114, 97, 115, 101, 119, 104, 105, 99, 104, 110, 101, 101, 100, 115, 116, 111, 98, 101, 51, 50, 98, 121, 116, 101, 115, 116])
+            // 从前 16 个字节中读取 iv 值
+            const iv = byteArray.slice(0, 16);
+
+            // 从第 17 个字节开始获取密文数据
+            const ciphertext = byteArray.slice(16);
+
+            // 解密密文数据
+            // const key = "passphrasewhichneedstobe32bytest";
+            const aesCbc = new aesjs.ModeOfOperation.cbc(
+                // aesjs.utils.utf8.toBytes(key),
+                key,
+                iv
+            );
+            const decryptedBytes = aesCbc.decrypt(ciphertext);
+
+            // 转换为字符串
+            const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+
+            console.log(decryptedText, "aes");
+            console.log(window.btoa(decryptedText));
+        }
+        aes()
+    </script>
+    </script>
+</body>
+
+</html>
